@@ -1,0 +1,8 @@
+FROM library/postgres
+
+ENV POSTGRES_USER zrik
+ENV POSTGRES_PASSWORD 1234
+ENV POSTGRES_DB bookstore
+
+ARG port
+EXPOSE $port

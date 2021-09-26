@@ -1,0 +1,55 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: db
+    build:
+      context: ./data/postgres
+      dockerfile: ./Dockerfile
+      args:
+        port: 5432
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - '5432:5432'
+    networks:
+      - bookstore
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: dbclient
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'hoang@zrik.com'
+      PGADMIN_DEFAULT_PASSWORD: '1234'
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - '5050:80'
+    networks:
+      - bookstore
+    restart: unless-stopped
+
+  redis:
+    container_name: redis
+    build:
+      context: ./data/redis
+      dockerfile: ./Dockerfile
+      args:
+        port: 6379
+    volumes:
+      - redis:/data
+    ports:
+      - '6379:6379'
+    networks:
+      - bookstore
+    restart: unless-stopped
+networks:
+  bookstore:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  redis:
