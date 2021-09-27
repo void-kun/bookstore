@@ -13,9 +13,7 @@ export const DBConnect = async () => {
 
   try {
     if (connection) {
-      if (!connection.isConnected) {
-        await connection.connect();
-      }
+      if (!connection.isConnected) await connection.connect();
     } else {
       await createConnection(connectOpt);
       Logger.info(LOG_DB_MESSAGE['DBINFO001']);

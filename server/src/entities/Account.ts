@@ -7,31 +7,32 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
+  BaseEntity,
 } from 'typeorm';
 import { UserInfo } from './UserInfo';
 
 @Entity({ name: 'account' })
-export class Account {
+export class Account extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number = 0;
+  id!: number;
 
   @OneToOne((_type) => UserInfo)
   @JoinColumn()
-  user: UserInfo;
+  user!: UserInfo;
 
   @Index({ unique: true })
   @Column('varchar', { length: 50 })
-  email: string;
+  email!: string;
 
   @Column('varchar', { length: 255 })
-  hash: string;
+  hash!: string;
 
   @Column('varchar', { length: 50 })
-  salt: string;
+  salt!: string;
 
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

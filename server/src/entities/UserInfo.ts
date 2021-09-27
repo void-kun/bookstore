@@ -5,26 +5,32 @@ import {
   Index,
   CreateDateColumn,
   UpdateDateColumn,
+  BaseEntity,
 } from 'typeorm';
 
+export enum UserRole {
+  ADMIN_ROLE = '1',
+  USER_ROLE = '0',
+}
+
 @Entity({ name: 'user_info' })
-export class UserInfo {
+export class UserInfo extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number = 0;
+  id!: number;
 
   @Index({ unique: true })
   @Column('varchar', { length: 50 })
-  username: string;
+  username!: string;
 
   @Column('varchar', { length: 255 })
-  avatar: string = '';
+  avatar?: string;
 
-  @Column('char', { length: 1 })
-  role: string = '0';
+  @Column({ type: 'simple-enum', enum: UserRole, default: UserRole.USER_ROLE })
+  role!: UserRole;
 
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }
