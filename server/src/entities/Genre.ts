@@ -6,8 +6,8 @@ import {
   BaseEntity,
 } from 'typeorm';
 
-@Entity({ name: 'author' })
-export class Author extends BaseEntity {
+@Entity({ name: 'genre' })
+export class Genre extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 

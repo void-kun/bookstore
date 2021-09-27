@@ -4,7 +4,7 @@ require('dotenv').config({
   path: './.env.dev',
 });
 
-import app from './src/app';
+import app from './src';
 import Logger from './src/utils/logger.util';
 
 const PORT = parseInt(process.env.PORT as string, 10) || 8081;

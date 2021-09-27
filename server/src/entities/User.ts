@@ -1,3 +1,4 @@
+import { Book } from './Book';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,6 +7,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 export enum UserRole {
@@ -13,8 +16,8 @@ export enum UserRole {
   USER_ROLE = '0',
 }
 
-@Entity({ name: 'user_info' })
-export class UserInfo extends BaseEntity {
+@Entity({ name: 'user' })
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -27,6 +30,10 @@ export class UserInfo extends BaseEntity {
 
   @Column({ type: 'simple-enum', enum: UserRole, default: UserRole.USER_ROLE })
   role!: UserRole;
+
+  @ManyToMany((_type) => Book)
+  @JoinTable({ name: 'book_user_reading' })
+  booksReading!: Book[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;

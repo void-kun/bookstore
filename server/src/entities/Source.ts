@@ -6,8 +6,8 @@ import {
   BaseEntity,
 } from 'typeorm';
 
-@Entity({ name: 'author' })
-export class Author extends BaseEntity {
+@Entity({ name: 'source' })
+export class Source extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -16,6 +16,9 @@ export class Author extends BaseEntity {
 
   @Column('varchar', { length: 255 })
   slug!: string;
+
+  @Column('varchar', { length: 255 })
+  url!: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;

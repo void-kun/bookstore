@@ -9,16 +9,16 @@ import {
   JoinColumn,
   BaseEntity,
 } from 'typeorm';
-import { UserInfo } from './UserInfo';
+import { User } from './User';
 
 @Entity({ name: 'account' })
 export class Account extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @OneToOne((_type) => UserInfo)
+  @OneToOne((_type) => User)
   @JoinColumn()
-  user!: UserInfo;
+  user!: User;
 
   @Index({ unique: true })
   @Column('varchar', { length: 50 })
