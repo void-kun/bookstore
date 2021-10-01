@@ -3,7 +3,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  Index,
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
@@ -20,10 +19,6 @@ export enum UserRole {
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
-
-  @Index({ unique: true })
-  @Column('varchar', { length: 50 })
-  username!: string;
 
   @Column('varchar', { length: 255 })
   avatar?: string;

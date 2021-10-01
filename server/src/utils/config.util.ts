@@ -1,5 +1,5 @@
 interface INodeConfig {
-  node_env: string;
+  node_env: string
 }
 
 const nodeConfig: INodeConfig = {
@@ -19,4 +19,37 @@ const dbConfig = {
   reconnectInterval: parseInt(process.env.DB_RECONNECT_INTERVAL),
 };
 
-export { nodeConfig, dbConfig };
+interface IRedisConfig {
+  port: number
+  host: string
+};
+
+const redisConfig: IRedisConfig = {
+  port: parseInt(process.env.REDIS_PORT),
+  host: process.env.REDIS_HOST
+};
+
+interface ISessionConfig {
+  secret: string
+};
+
+const sessionConfig: ISessionConfig = {
+  secret: process.env.SESSION_SECRET
+};
+
+interface ICookieConfig {
+  secure: boolean
+  httpOnly: boolean
+  maxAge: number
+  sameSite: any
+};
+
+const cookieConfig: ICookieConfig = {
+  secure: process.env.COOKIE_SECURE === 'true',
+  httpOnly: process.env.COOKIE_HTTPONLY === 'true',
+  maxAge: parseInt(process.env.COOKIE_MAXAGE),
+  sameSite: process.env.COOKIE_SAMESITE,
+}
+
+export { nodeConfig, dbConfig, redisConfig, sessionConfig, cookieConfig };
+

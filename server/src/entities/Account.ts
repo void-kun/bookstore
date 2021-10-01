@@ -8,7 +8,10 @@ import {
   OneToOne,
   JoinColumn,
   BaseEntity,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 import { User } from './User';
 
 @Entity({ name: 'account' })
@@ -19,6 +22,10 @@ export class Account extends BaseEntity {
   @OneToOne((_type) => User)
   @JoinColumn()
   user!: User;
+
+  @Index({ unique: true })
+  @Column('varchar', { length: 50 })
+  username!: string;
 
   @Index({ unique: true })
   @Column('varchar', { length: 50 })
@@ -35,4 +42,19 @@ export class Account extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
+
+  @BeforeInsert()
+  genSalt() {
+    this.salt = bcrypt.genSaltSync(12);
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  hashPassword() {
+    this.hash = bcrypt.hashSync(this.hash, this.salt);
+  }
+
+  checkPasswordIsValid(password: string) {
+    return bcrypt.compareSync(password, this.hash);
+  }
 }
