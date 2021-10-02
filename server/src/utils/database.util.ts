@@ -1,8 +1,7 @@
-import { NextFunction } from 'express';
 import { Connection, getConnection, createConnection } from 'typeorm';
-import { LOG_DB_MESSAGE } from './constant.util';
 import connectOpt from '../configs/orm.config';
 import Logger from '../utils/logger.util';
+import message from '../data/message.json';
 
 export const DBConnect = async () => {
   let connection: Connection | undefined;
@@ -16,19 +15,10 @@ export const DBConnect = async () => {
       if (!connection.isConnected) await connection.connect();
     } else {
       await createConnection(connectOpt);
-      Logger.info(LOG_DB_MESSAGE['DBINFO001']);
+      Logger.info(message.log.database.DBINFO001);
     }
   } catch (error) {
-    Logger.error(`${LOG_DB_MESSAGE['DBERR001']}\n${error}`);
+    Logger.error(`${message.log.database.DBERR001}\n${error}`);
     throw error;
-  }
-};
-
-export const TryDBConnect = async (onError: Function, next?: NextFunction) => {
-  try {
-    await DBConnect();
-    if (next) next();
-  } catch (error) {
-    onError();
   }
 };

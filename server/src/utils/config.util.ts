@@ -1,5 +1,5 @@
 interface INodeConfig {
-  node_env: string
+  node_env: string;
 }
 
 const nodeConfig: INodeConfig = {
@@ -20,36 +20,56 @@ const dbConfig = {
 };
 
 interface IRedisConfig {
-  port: number
-  host: string
-};
+  port: number;
+  host: string;
+}
 
 const redisConfig: IRedisConfig = {
   port: parseInt(process.env.REDIS_PORT),
-  host: process.env.REDIS_HOST
+  host: process.env.REDIS_HOST,
 };
 
 interface ISessionConfig {
-  secret: string
-};
+  secret: string;
+}
 
 const sessionConfig: ISessionConfig = {
-  secret: process.env.SESSION_SECRET
+  secret: process.env.SESSION_SECRET,
 };
 
 interface ICookieConfig {
-  secure: boolean
-  httpOnly: boolean
-  maxAge: number
-  sameSite: any
-};
+  secure: boolean;
+  httpOnly: boolean;
+  maxAge: number;
+  sameSite: any;
+}
 
 const cookieConfig: ICookieConfig = {
   secure: process.env.COOKIE_SECURE === 'true',
   httpOnly: process.env.COOKIE_HTTPONLY === 'true',
   maxAge: parseInt(process.env.COOKIE_MAXAGE),
   sameSite: process.env.COOKIE_SAMESITE,
+};
+
+interface IJWTConfig {
+  accessSecret: string;
+  refreshSecret: string;
+  accessTime: string;
+  refreshTime: string;
 }
 
-export { nodeConfig, dbConfig, redisConfig, sessionConfig, cookieConfig };
+const jwtConfig: IJWTConfig = {
+  accessSecret: process.env.JWT_ACCESS_SECRET,
+  refreshSecret: process.env.JWT_REFRESH_SECRET,
+  accessTime: process.env.JWT_ACCESS_TIME,
+  refreshTime: process.env.JWT_REFRESH_TIME,
+};
 
+export {
+  nodeConfig,
+  dbConfig,
+  redisConfig,
+  sessionConfig,
+  cookieConfig,
+  jwtConfig,
+};

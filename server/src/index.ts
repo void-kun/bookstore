@@ -1,21 +1,28 @@
-import express, { Express, Request, Response, NextFunction } from 'express';
+import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 
 import { loggerMiddleware } from './middlewares';
-import { TryDBConnect } from './utils/database.util';
-import { LOG_DB_MESSAGE } from './utils/constant.util';
+import { DBConnect } from './utils/database.util';
 import { redisClient } from './utils/redis.util';
 import { sessionConfig, cookieConfig } from './utils/config.util';
 import routes from './routes';
+import jwt from 'jsonwebtoken';
+
+declare global {
+  namespace Express {
+    interface Request {
+      userData: string | jwt.JwtPayload;
+      token: string;
+    }
+  }
+}
 
 const app: Express = express();
-const database = async (_req: Request, res: Response, next: NextFunction) => {
-  await TryDBConnect(() => {
-    res.json({ error: LOG_DB_MESSAGE['DBERR001'] });
-  }, next);
-};
+(async () => {
+  await DBConnect();
+})();
 
 const RedisStore = connectRedis(session);
 const redisSession = session({
@@ -25,13 +32,18 @@ const redisSession = session({
   saveUninitialized: false,
   cookie: cookieConfig,
 });
+const handleError = (_req: Request, res: Response) => {
+  res.send();
+};
 
 // middleware
 app.use(cors());
 app.use(express.json());
 app.use(redisSession);
-app.use(database);
-app.use(routes);
+app.use('/api/v1', routes);
+// static files
+app.use('/static', express.static('static'));
 app.use(loggerMiddleware);
+app.use(handleError);
 
 export default app;
