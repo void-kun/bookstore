@@ -1,14 +1,17 @@
-import { Book } from './Book';
 import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
     UpdateDateColumn,
+    OneToOne,
+    JoinColumn,
     BaseEntity,
     ManyToMany,
     JoinTable,
 } from 'typeorm';
+import { Account } from './Account';
+import { Book } from './Book';
 
 export enum UserRole {
     ADMIN_ROLE = '1',
@@ -19,6 +22,10 @@ export enum UserRole {
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id!: number;
+
+    @OneToOne((_type) => User)
+    @JoinColumn()
+    public account!: Account;
 
     @Column('varchar', { length: 255 })
     public avatar?: string;
@@ -32,7 +39,7 @@ export class User extends BaseEntity {
 
     @ManyToMany((_type) => Book)
     @JoinTable({ name: 'book_user_reading' })
-    public booksReading!: Book[];
+    public booksReading?: Book[];
 
     @CreateDateColumn({ type: 'timestamp' })
     public createdAt!: Date;

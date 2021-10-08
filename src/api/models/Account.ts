@@ -5,14 +5,11 @@ import {
     Index,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToOne,
-    JoinColumn,
     BaseEntity,
     BeforeInsert,
     BeforeUpdate,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { User } from './User';
 
 @Entity({ name: 'account' })
 export class Account extends BaseEntity {
@@ -22,10 +19,6 @@ export class Account extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     public id!: number;
-
-    @OneToOne((_type) => User)
-    @JoinColumn()
-    public user!: User;
 
     @Index({ unique: true })
     @Column('varchar', { length: 50 })

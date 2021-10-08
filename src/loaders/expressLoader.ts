@@ -5,7 +5,7 @@ import {
 import { Application } from 'express';
 import { createExpressServer } from 'routing-controllers';
 
-import { authrizationChecker } from '../auth/authorizationChecker';
+import { authorizationChecker } from '../auth/authorizationChecker';
 import { currentUserChecker } from '../auth/currentUserChecker';
 import { env } from '../env';
 
@@ -25,12 +25,15 @@ export const expressLoader: Loader = (setting: Setting | undefined) => {
         middlewares: env.app.dirs.middlewares,
         interceptors: env.app.dirs.interceptors,
 
-        authorizationChecker: authrizationChecker(connection),
+        authorizationChecker: authorizationChecker(connection),
         currentUserChecker: currentUserChecker(connection),
     });
+    console.log(`Application running`);
 
     if (!env.isTest) {
-        const server = expressApp.listen(env.app.port);
+        const server = expressApp.listen(env.app.port, () =>
+            console.log(`Application running on port ${env.app.port}`)
+        );
         setting.setData('express_server', server);
     }
 

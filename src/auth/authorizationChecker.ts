@@ -5,7 +5,7 @@ import { Container } from 'typedi';
 import { Logger } from '../lib/logger';
 import { AuthService } from './AuthService';
 
-export function authrizationChecker(
+export function authorizationChecker(
     connection: Connection
 ): (action: Action, roles: any[]) => Promise<boolean> | boolean {
     const log = new Logger(__filename);
